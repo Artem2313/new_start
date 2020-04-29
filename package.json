@@ -1,5 +1,5 @@
 {
-  "name": "role-play",
+  "name": "new_start",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -42,5 +42,5 @@
     "lint-staged": "^8.1.5",
     "prettier": "^1.17.0"
   },
-  "homepage": "https://artem2313.github.io/role-play/"
+  "homepage": "https://github.com/Artem2313/new_start/"
 }
