@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
 import {
   Container,
   HamburgerButton,
@@ -8,25 +9,43 @@ import {
   ListItem,
 } from './Dropdown.styled';
 
-const Dropdown = ({ isOpen = false }) => (
-  <Container>
-    <HamburgerButton type="button">&#9776;</HamburgerButton>
+export default class Dropdown extends Component {
+  static defaultProps = {
+    isOpen: false,
+  };
 
-    {isOpen && (
-      <DropdownContainer>
-        <List>
-          <ListItem>Option 1</ListItem>
-          <ListItem>Option 2</ListItem>
-          <ListItem>Option 3</ListItem>
-          <ListItem>Option 4</ListItem>
-        </List>
-      </DropdownContainer>
-    )}
-  </Container>
-);
+  state = {
+    isOpen: this.props.isOpen,
+  };
 
-Dropdown.propTypes = {
-  isOpen: PropTypes.bool,
-};
+  static propTypes = {
+    isOpen: PropTypes.bool,
+  };
 
-export default Dropdown;
+  handleToggle = () => {
+    this.setState(prevState => ({
+      isOpen: !prevState.isOpen,
+    }));
+  };
+
+  render() {
+    const { isOpen } = this.state;
+    return (
+      <Container>
+        <HamburgerButton type="button" onClick={this.handleToggle}>
+          &#9776;
+        </HamburgerButton>
+        {isOpen && (
+          <DropdownContainer>
+            <List>
+              <ListItem>Option 1</ListItem>
+              <ListItem>Option 2</ListItem>
+              <ListItem>Option 3</ListItem>
+              <ListItem>Option 4</ListItem>
+            </List>
+          </DropdownContainer>
+        )}
+      </Container>
+    );
+  }
+}

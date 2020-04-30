@@ -1,23 +1,36 @@
 import React from 'react';
-// import ProductList from './ProductList';
-// import Panel from './Panel';
+import Counter from './Counter/Counter';
 import Dropdown from './Dropdown/Dropdown';
-// import Button from './Button/Button';
-// import products from '../products.json';
+
+// export default class App extends Component {
+//   state = {
+//     message: '',
+//   };
+
+//   updateMessage = () => {
+//     this.setState({ message: `Updated at ${Date.now()}` });
+//   };
+
+//   render() {
+//     const { message } = this.state;
+//     return (
+//       <div>
+//         <p>{message || 'Hello'}</p>
+//         <button type="button" onClick={this.updateMessage}>
+//           update
+//         </button>
+//         <MessageUpdater updateMessage={this.updateMessage} />
+//         {/* <Counter step={1} initialValue={5} />
+//         <Dropdown isOpen={false} /> */}
+//       </div>
+//     );
+//   }
+// }
 
 const App = () => (
   <div>
-    {/* <Button
-      label="Click me!"
-      icon="https://avatars2.githubusercontent.com/u/39895671?s=400&v=4"
-      // disabled
-    /> */}
-
-    <Dropdown isOpen />
-
-    {/* <Panel title="Top Products">
-      <ProductList items={products} />
-    </Panel> */}
+    <Counter step={1} initialValue={5} />
+    <Dropdown isOpen={false} />
   </div>
 );
 
