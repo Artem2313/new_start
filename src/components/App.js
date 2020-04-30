@@ -1,37 +1,22 @@
-import React from 'react';
-import Counter from './Counter/Counter';
-import Dropdown from './Dropdown/Dropdown';
+import React, { Component } from 'react';
+import SignUpForm from './SingUp/SignUpForm';
 
-// export default class App extends Component {
-//   state = {
-//     message: '',
-//   };
+export default class App extends Component {
+  state = {
+    login: '',
+  };
 
-//   updateMessage = () => {
-//     this.setState({ message: `Updated at ${Date.now()}` });
-//   };
+  handleSignUp = credentials => {
+    console.log(credentials);
+    this.setState({ login: credentials.login });
+  };
 
-//   render() {
-//     const { message } = this.state;
-//     return (
-//       <div>
-//         <p>{message || 'Hello'}</p>
-//         <button type="button" onClick={this.updateMessage}>
-//           update
-//         </button>
-//         <MessageUpdater updateMessage={this.updateMessage} />
-//         {/* <Counter step={1} initialValue={5} />
-//         <Dropdown isOpen={false} /> */}
-//       </div>
-//     );
-//   }
-// }
-
-const App = () => (
-  <div>
-    <Counter step={1} initialValue={5} />
-    <Dropdown isOpen={false} />
-  </div>
-);
-
-export default App;
+  render() {
+    return (
+      <div>
+        <p>Login {this.state.login}</p>
+        <SignUpForm onSignUp={this.handleSignUp} />
+      </div>
+    );
+  }
+}
