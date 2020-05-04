@@ -1,50 +1,40 @@
 import React, { Component } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import CommentList from './CommentList';
-import CommentForm from './CommentForm';
+import axios from 'axios';
+import ArticleList from './ArticleList';
+
+const BASE_URL = 'https://hn.algolia.com/api/v1/search?query=';
+
+const DEFAULT_QUERY = 'react';
+
+/* 
+  Функция помошник, которая возвращает массив объектов такого формата, который ожидает компонент
+  */
+
+const mapper = articles => {
+  return articles.map(({ ObjectID: id, url: link, ...props }) => ({
+    id,
+    link,
+    ...props,
+  }));
+};
 
 export default class App extends Component {
   state = {
-    comments: [],
+    articles: [],
   };
 
   componentDidMount() {
-    const persistedComments = localStorage.getItem('comments');
-
-    if (persistedComments) {
-      this.setState({ comments: JSON.parse(persistedComments) });
-    }
+    // get request
+    axios
+      .get(BASE_URL + DEFAULT_QUERY)
+      .then(({ data }) => {
+        this.setState({ articles: data.hits });
+      })
+      .catch(err => console.log(err));
   }
-
-  componentDidUpdate(prevProps, prevState) {
-    console.log('prevProps: ', prevProps);
-    console.log('prevState: ', prevState);
-    console.log('this.state: ', this.state);
-
-    if (prevState.comments !== this.state.comments) {
-      localStorage.setItem('comments', JSON.stringify(this.state.comments));
-    }
-  }
-
-  addComment = text => {
-    const newComment = {
-      id: uuidv4(),
-      text,
-      createdAt: new Date().toISOString(),
-    };
-
-    return this.setState(prevState => ({
-      comments: [...prevState.comments, newComment],
-    }));
-  };
 
   render() {
-    const { comments } = this.state;
-    return (
-      <div>
-        <CommentForm onAddComment={this.addComment} />
-        <CommentList items={comments} />
-      </div>
-    );
+    const { articles } = this.state;
+    return <div>{articles.length > 0 && <ArticleList items={articles} />}</div>;
   }
 }
