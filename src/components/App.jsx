@@ -1,40 +1,33 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import ArticleList from './ArticleList';
+import React from 'react';
+import styled from 'styled-components';
+import { Route, Switch } from 'react-router-dom';
+import HomePage from '../pages/HomePage';
+import AboutPage from '../pages/AboutPage';
+import ArticlesPage from '../pages/ArticlesPage';
+import NotFoundPage from '../pages/NotFoundPage';
+import ArticlePage from '../pages/ArticlePage';
+import Nav from './Nav';
 
-const BASE_URL = 'https://hn.algolia.com/api/v1/search?query=';
+const StyledDiv = styled.div`
+  max-width: 1170px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 16px;
+`;
 
-const DEFAULT_QUERY = 'react';
-
-/* 
-  Функция помошник, которая возвращает массив объектов такого формата, который ожидает компонент
-  */
-
-const mapper = articles => {
-  return articles.map(({ ObjectID: id, url: link, ...props }) => ({
-    id,
-    link,
-    ...props,
-  }));
+const App = () => {
+  return (
+    <StyledDiv>
+      <Nav />
+      <Switch>
+        <Route path="/" exact component={HomePage} />
+        <Route path="/articles/:id" component={ArticlePage} />
+        <Route path="/articles" component={ArticlesPage} />
+        <Route path="/about" component={AboutPage} />
+        <Route component={NotFoundPage} />
+      </Switch>
+    </StyledDiv>
+  );
 };
 
-export default class App extends Component {
-  state = {
-    articles: [],
-  };
-
-  componentDidMount() {
-    // get request
-    axios
-      .get(BASE_URL + DEFAULT_QUERY)
-      .then(({ data }) => {
-        this.setState({ articles: data.hits });
-      })
-      .catch(err => console.log(err));
-  }
-
-  render() {
-    const { articles } = this.state;
-    return <div>{articles.length > 0 && <ArticleList items={articles} />}</div>;
-  }
-}
+export default App;

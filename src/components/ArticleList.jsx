@@ -1,26 +1,21 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { Link, withRouter } from 'react-router-dom';
 
-const ArticleList = ({ items }) => (
+const ArticleList = ({ items = [], match, location }) => (
   <ul>
-    {items.map(({ objectID, url, title }) => (
-      <li key={objectID}>
-        <a href={url} target="_blank" rel="noreferrer noopener">
-          {title}
-        </a>
+    {items.map(item => (
+      <li key={item.id}>
+        <Link
+          to={{
+            pathname: `${match.path}/${item.id}`,
+            state: { from: location },
+          }}
+        >
+          {item.title}
+        </Link>
       </li>
     ))}
   </ul>
 );
 
-ArticleList.propTypes = {
-  items: PropTypes.arrayOf(
-    PropTypes.shape({
-      objectID: PropTypes.string.isRequired,
-      url: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
-    }).isRequired,
-  ).isRequired,
-};
-
-export default ArticleList;
+export default withRouter(ArticleList);
