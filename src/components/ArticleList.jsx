@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 const ArticleList = ({ items }) => (
   <ul>
-    {items.map(({ objectID, url, title }) => (
-      <li key={objectID}>
-        <a href={url} target="_blank" rel="noreferrer noopener">
+    {items.map(({ id, link, title }) => (
+      <li key={id}>
+        <a href={link} target="_blank" rel="noreferrer noopener">
           {title}
         </a>
       </li>
@@ -16,8 +16,8 @@ const ArticleList = ({ items }) => (
 ArticleList.propTypes = {
   items: PropTypes.arrayOf(
     PropTypes.shape({
-      objectID: PropTypes.string.isRequired,
-      url: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired,
+      link: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
     }).isRequired,
   ).isRequired,
