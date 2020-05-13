@@ -1,93 +1,56 @@
-import React, { Component } from 'react';
-import shortid from 'shortid';
-import TaskEditor from './TaskEditor/TaskEditor';
-import TaskFilter from './TaskFilter/TaskFilter';
-import TaskList from './TaskList/TaskList';
-import filterTasks from '../helpers/filterTasks';
+import React, { Component, createContext } from 'react';
 
-const containerStyles = {
-  maxWidth: 1200,
-  minWidth: 800,
-  marginLeft: 'auto',
-  marginRight: 'auto',
-};
+// 1 Создаем контекст
+const MyContext = createContext();
 
-export default class App extends Component {
+// 2 Зашиваем этот контекст в класс, где и передаем необходимые данные и методы, которые должны быть доступны коесьюмерам
+class MyContextProvider extends Component {
   state = {
-    tasks: [],
-    filter: '',
+    text: Date.now().year,
   };
 
-  componentDidMount() {
-    const persistedTasks = localStorage.getItem('tasks');
-    if (persistedTasks) {
-      try {
-        const tasks = JSON.parse(persistedTasks);
-
-        this.setState({ tasks });
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.tasks !== this.state.tasks) {
-      localStorage.setItem('tasks', JSON.stringify(this.state.tasks));
-    }
-  }
-
-  changeFilter = e => {
-    this.setState({ filter: e.target.value });
-  };
-
-  addTask = task => {
-    const newTask = {
-      ...task,
-      id: shortid.generate(),
-      completed: false,
-    };
-
-    this.setState(prevState => ({ tasks: [newTask, ...prevState.tasks] }));
-  };
-
-  deleteTask = id => {
-    this.setState(prevState => ({
-      tasks: prevState.tasks.filter(task => task.id !== id),
-    }));
-  };
-
-  updateCompleted = id => {
-    this.setState(prevState => ({
-      tasks: prevState.tasks.map(task => {
-        return task.id === id ? { ...task, completed: !task.completed } : task;
-      }),
-    }));
-  };
-
-  updatePriority = (id, priority) => {
-    this.setState(prevState => ({
-      tasks: prevState.tasks.map(task =>
-        task.id === id ? { ...task, priority } : task,
-      ),
-    }));
-  };
+  changeText = () => this.setState({ text: Date.now() });
 
   render() {
-    const { tasks, filter } = this.state;
-    const filteredTasks = filterTasks(tasks, filter);
+    // 3 Возвращаем Context.Provider, где в value передаем необходимые данные для children
+
     return (
-      <div style={containerStyles}>
-        <TaskEditor onAddTask={this.addTask} />
-        <hr />
-        <TaskFilter value={filter} onChangeFilter={this.changeFilter} />
-        <TaskList
-          items={filteredTasks}
-          onDeleteTask={this.deleteTask}
-          onUpdateCompleted={this.updateCompleted}
-          onUpdatePriority={this.updatePriority}
-        />
-      </div>
+      <MyContext.Provider
+        value={{ text: this.state.text, onChange: this.changeText }}
+      >
+        {/* 4 Рендерим  children */}
+        {this.props.children}
+      </MyContext.Provider>
     );
   }
 }
+
+export default class App extends Component {
+  state = {};
+
+  render() {
+    return (
+      // 5 Обрачиваем children в класс ContextProvider
+      <MyContextProvider>
+        <h1>Hello CodeSandbox</h1>
+        <h2>Start editing to see some magic happen</h2>
+        <Button />
+      </MyContextProvider>
+    );
+  }
+}
+
+const Button = () => (
+  // 6 Обрачиваем childrenа, которому хотим передать контекст в MyContext.Consumer (который полчаем от ContextProvider)
+  <MyContext.Consumer>
+    {/* 7 Передаем контекст  childrenу */}
+    {context => {
+      console.log(context);
+      return (
+        <button type="button" onClick={context.onChange}>
+          {`Text: ${context.text}`}
+        </button>
+      );
+    }}
+  </MyContext.Consumer>
+);
