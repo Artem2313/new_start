@@ -57,14 +57,6 @@ export default class App extends Component {
     }));
   };
 
-  updateCompleted = id => {
-    this.setState(prevState => ({
-      tasks: prevState.tasks.map(task => {
-        return task.id === id ? { ...task, completed: !task.completed } : task;
-      }),
-    }));
-  };
-
   updatePriority = (id, priority) => {
     this.setState(prevState => ({
       tasks: prevState.tasks.map(task =>
@@ -85,7 +77,6 @@ export default class App extends Component {
           items={filteredTasks}
           onDeleteTask={this.deleteTask}
           onUpdateCompleted={this.updateCompleted}
-          onUpdatePriority={this.updatePriority}
         />
       </div>
     );

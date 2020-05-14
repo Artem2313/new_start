@@ -3,12 +3,7 @@ import PropTypes from 'prop-types';
 import Task from '../Task/Task';
 import styles from './TaskList.module.css';
 
-const TaskList = ({
-  items,
-  onDeleteTask,
-  onUpdateCompleted,
-  onUpdatePriority,
-}) =>
+const TaskList = ({ items, onDeleteTask, onUpdateCompleted }) =>
   items.length > 0 && (
     <ul className={styles.list}>
       {items.map(item => (
@@ -17,7 +12,6 @@ const TaskList = ({
             {...item}
             onDeleteTask={() => onDeleteTask(item.id)}
             onUpdateCompleted={onUpdateCompleted}
-            onUpdatePriority={onUpdatePriority}
           />
         </li>
       ))}
