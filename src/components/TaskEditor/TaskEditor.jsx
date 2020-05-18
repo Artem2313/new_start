@@ -7,9 +7,21 @@ import PrioritySelector from '../PrioritySelector/PrioritySelector';
 const options = Object.values(Priority);
 
 export default class TaskEditor extends Component {
-  state = {
+  static propTypes = {
+    onSave: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    text: PropTypes.string,
+    priority: PropTypes.string,
+  };
+
+  static defaultProps = {
     text: '',
     priority: Priority.NORMAL,
+  };
+
+  state = {
+    text: this.props.text,
+    priority: this.props.priority,
   };
 
   handleChange = e => {
@@ -18,8 +30,8 @@ export default class TaskEditor extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const { onAddTask } = this.props;
-    onAddTask({ ...this.state });
+    const { onSave } = this.props;
+    onSave({ ...this.state });
     this.setState({ text: '', priority: 'normal' });
   };
 
@@ -43,12 +55,13 @@ export default class TaskEditor extends Component {
             value={priority}
           />
         </label>
-        <button type="submit">Create</button>
+        <div>
+          <button type="submit">Save</button>
+          <button type="button" onClick={this.props.onCancel}>
+            Cancel
+          </button>
+        </div>
       </form>
     );
   }
 }
-
-TaskEditor.propTypes = {
-  onAddTask: PropTypes.func.isRequired,
-};

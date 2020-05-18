@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Task from '../Task/Task';
 import styles from './TaskList.module.css';
 
-const TaskList = ({ items, onDeleteTask, onUpdateCompleted }) =>
+const TaskList = ({ items, onDeleteTask, onUpdateCompleted, onEditTask }) =>
   items.length > 0 && (
     <ul className={styles.list}>
       {items.map(item => (
@@ -11,7 +11,8 @@ const TaskList = ({ items, onDeleteTask, onUpdateCompleted }) =>
           <Task
             {...item}
             onDeleteTask={() => onDeleteTask(item.id)}
-            onUpdateCompleted={onUpdateCompleted}
+            onUpdateCompleted={() => onUpdateCompleted(item.id)}
+            onEditTask={() => onEditTask(item.id)}
           />
         </li>
       ))}
@@ -28,5 +29,4 @@ TaskList.propTypes = {
   ).isRequired,
   onDeleteTask: PropTypes.func.isRequired,
   onUpdateCompleted: PropTypes.func.isRequired,
-  onUpdatePriority: PropTypes.func.isRequired,
 };

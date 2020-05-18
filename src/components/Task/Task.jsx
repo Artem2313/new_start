@@ -1,10 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './Task.module.css';
-import Priority from '../../utils/Priority';
-import PrioritySelector from '../PrioritySelector/PrioritySelector';
-
-const options = Object.values(Priority);
 
 const Task = ({
   text,
@@ -12,27 +8,29 @@ const Task = ({
   completed,
   onDeleteTask,
   onUpdateCompleted,
-  onUpdatePriority,
-  id,
+  onEditTask,
 }) => (
   <div className={`${styles.task} ${styles[`${priority}Priority`]}`}>
-    <p className={styles.text}>{text}</p>
+    <p
+      className={styles.text}
+      style={{ textDecoration: completed ? 'line-through' : 'none' }}
+    >
+      {text}
+    </p>
     <hr />
     <div className={styles.actions}>
       <button type="button" onClick={onDeleteTask}>
         Delete
       </button>
-      <PrioritySelector
-        options={options}
-        value={priority}
-        onChange={e => onUpdatePriority(id, e.target.value)}
-      />
+      <button type="button" onClick={onEditTask}>
+        Edit
+      </button>
       <label>
         Completed:
         <input
           type="checkbox"
           checked={completed}
-          onChange={() => onUpdateCompleted(id)}
+          onChange={onUpdateCompleted}
         />
       </label>
     </div>
@@ -42,10 +40,8 @@ const Task = ({
 Task.propTypes = {
   text: PropTypes.string.isRequired,
   priority: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
   completed: PropTypes.bool.isRequired,
   onDeleteTask: PropTypes.func.isRequired,
-  onUpdatePriority: PropTypes.func.isRequired,
   onUpdateCompleted: PropTypes.func.isRequired,
 };
 
