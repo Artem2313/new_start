@@ -16,7 +16,7 @@ const StepSelector = ({ value, onChange }) => (
 );
 
 const mapStateToProps = state => ({
-  value: state.step,
+  value: state.timer.step,
 });
 
 const mapDispatchToProps = dispatch => ({
