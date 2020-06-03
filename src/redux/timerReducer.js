@@ -14,13 +14,7 @@ const valueReducer = (state = 0, { type, payload }) => {
   }
 };
 
-const stepReducer = (
-  state = {
-    value: 5,
-    label: 5,
-  },
-  { type, payload },
-) => {
+const stepReducer = (state = 5, { type, payload }) => {
   switch (type) {
     case Type.CHANGE_STEP:
       return payload;
